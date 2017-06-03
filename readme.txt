@@ -1,3 +1,2 @@
-Git is a version control syystem.
-Git is free sofeware.
-I am learning git.
+Git is a distributed version control syystem.
+Git is good sofeware.
