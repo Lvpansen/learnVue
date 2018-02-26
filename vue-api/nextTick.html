@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no,maximum-scale=1.0,minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <p ref="pb">{{msg}}</p>
+    <button @click="tick">click</button>
+    <div class="soubox">
+      <button @click="showSou">搜索</button>
+      <div class="sou" v-show="show">
+        <input ref="sou" type="text" placeholder="请输入搜索内容" id="keywords">
+      </div>
+    </div>
+  </div>
+  <script src="js/vue.js"></script>
+  <script>
+    var vm = new Vue({
+      el:'#app',
+      data(){
+        return {
+          msg:'Hi',
+          show:false
+        }
+      },
+      mounted(){
+        // this.tick();
+      },
+      methods:{
+        tick(){
+          // setTimeout(function(){
+            this.msg = 'Hello';
+          // },100)
+
+          //DOM没有更新
+          console.log(this.$refs.pb)//这里打印出来的元素中的值已经时新的，推测在操作DOM时会延迟，而直接获取DOM元素时不存在
+          //操作DOM时，还是原来的值。
+          console.log(this.$refs.pb.innerHTML)
+
+
+          Vue.nextTick(function(){
+            //DOM更新，操作DOM时，值已经更新。
+            console.log(vm.$refs.pb.innerHTML)
+            console.log(vm.$refs.pb)
+          })
+        },
+        showSou(){
+          this.show = true;
+          // this.$refs.sou.focus(); //获取焦点的方法写在这里不起作用，DOM没有更新，所以操作DOM时没起作用。
+          console.log(this.$refs.sou)
+          Vue.nextTick(function(){
+            vm.$refs.sou.focus();
+          })
+        }
+      }
+    })
+  </script>
+</body>
+</html>
