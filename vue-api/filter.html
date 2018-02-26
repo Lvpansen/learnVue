@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no,maximum-scale=1.0,minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <input v-model="txt" type="text">
+    <p>{{txt | cap}}</p>
+    <span :name="txt | cap"></span>
+  </div>
+  <script src="js/vue.js"></script>
+  <script>
+    //注册全局过滤器
+    Vue.filter('cap1',function(val){
+      //...
+    })
+    var vm = new Vue({
+      el:'#app',
+      data(){
+        return {
+          txt:'',
+        }
+      },
+      //注册局部过滤器
+      filters:{
+        cap:function(value){
+          if (!value) {
+            return ''
+          };
+          value = value.toString();
+          return value.charAt(0).toUpperCase() + value.slice(1)
+        }
+      }
+    })
+    //过滤器使用注意:只能在 双花括号插值和 v-bind 表达式 中使用，在其他地方使用会报错。
+    //我认为在vue的属性中用过滤器应该较多，即使用v-bind的地方。
+  </script>
+</body>
+</html>
