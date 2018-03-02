@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no,maximum-scale=1.0,minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <tb-head :level="1">
+      <a href="#">Hello Wrold</a>
+      比好
+    </tb-head>
+    <tb-head :level="2">
+      <a href="#">Hello Vue</a>
+    </tb-head>
+  </div>
+  <script src="js/vue.js"></script>
+  <!-- <script type="text/x-template" id="templateId">
+    <h1 v-if="level === 1">
+      <slot></slot>
+    </h1>
+    <h2 v-else-if="level === 2">
+      <slot></slot>
+    </h2>
+  </script> -->
+  <script>
+    Vue.component('tb-head',{
+      // template:'#templateId',
+      render(h){//h,这里指的是createElement.createElement返回的信息会告诉Vue页面上需要渲染什么样的节点及其子节点。我们称这样的节点为虚拟DOM，可以简写为VNode。
+        return h(
+          'h' + this.level,//tag name 标签名称，这里拼出来的 h1,h2标签。
+          this.$slots.default//组件中的子元素存储在$slots.default中。
+        )
+      },
+      props:{
+        level:{
+          type:Number,
+          required:true
+        }
+      }
+    })
+    var vm = new Vue({
+      el:'#app',
+      data(){
+        return {
+          
+        }
+      },
+    })
+  </script>
+</body>
+</html>
