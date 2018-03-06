@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	
+</head>
+<body>
+	<div id="app">
+		<audio v-for="item in audioList" :src="item.url" controls></audio>
+		<bar v-for="(item,index) in audioList" :state="item.playState" :audio-index="index" :audio-info="item" @playaudio="playchange"></bar>
+	</div>
+	<script src="js/vue.js"></script>
+	<script type="text/x-template" id="compon">
+		<div>
+			<i @click="play">play</i>
+			<audio @timeupdate="updateTime" ref="audio" :src="audioInfo.url"></audio>
+			<p>{{percent}}</p>
+		</div>
+	</script>
+	<script>
+		Vue.component('bar',{
+			// template:'<div><i @click="play">play</i><audio @timeupdate="updateTime" ref="audio" :src="audioInfo.url"></audio><p>{{percent}}</p></div>',
+			template:'#compon',
+			props:{
+				audioInfo:{
+					type:Object,
+					default:function(){
+						return {}
+					}
+				},
+				audioIndex:{
+					type:Number,
+					default:0
+				},
+				state:{
+					type:Boolean,
+					default:false
+				}
+			},
+			data(){
+				return{
+					currentTime:"",
+					playState:""
+				}
+			},
+			computed:{
+				percent(){
+					var num = this.audioInfo.time?this.currentTime/this.audioInfo.time:0;
+					return (num*100) + "%"
+				}
+			},
+			mounted(){
+				// this.playState = this.audioInfo.playState;
+			},
+			watch:{
+				currentTime(val,oldVal){
+					// console.log(val,oldVal)
+				},
+				state:function(){
+						console.log(this.state)
+					if (!this.state) {
+						this.$refs.audio.pause();
+						// this.playState = !this.playState;
+					}
+				}
+			},
+			methods:{
+				updateTime(e){
+					this.currentTime = e.target.currentTime; 
+				},
+				play(){
+					if (!(this.state)) {
+						this.$refs.audio.play();
+						this.audioInfo.playState = !this.audioInfo.playState;
+						// this.state = !this.state;
+						this.$emit('playaudio',this.audioInfo.playState,this.audioIndex)
+
+					} else {
+						this.$refs.audio.pause();
+						this.audioInfo.playState = !this.audioInfo.playState;
+
+					}
+				}
+			}
+		})
+		var vm = new Vue({
+			el:'#app',
+			data(){
+				return {
+					audioList:[
+						{
+							url:'audio/周传雄 - 关不上的窗.mp3',
+							time:292,
+							playState:false
+						},
+						{
+							url:'audio/周传雄 - 蓝色土耳其.mp3',
+							time:284,
+							playState:false
+						},
+						{
+							url:'audio/周传雄 - 黄昏.mp3',
+							time:344,
+							playState:false
+						}
+					]
+				}
+			},
+			methods:{
+				playchange(msg,index){
+					this.audioList.forEach(function(item){
+						item.playState = false;
+					})
+					this.audioList[index].playState = true;
+					console.log(this.audioList);
+				}
+			}
+		});
+	</script>
+</body>
+</html>
