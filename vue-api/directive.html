@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>base1</title>
+</head>
+<body>
+	<div id="app">
+		<input type="text" v-focus>
+		<p v-red="'green'" @click="changeColor">中国</p>
+		<p v-color-switch="color">中华</p>
+		<input type="text" placeholder="请输入内容" v-auto-focus>
+	</div>
+	<script src="js/vue.js"></script>
+	<script>
+		Vue.directive('focus',{
+			inserted:function(el){
+				el.focus();
+			}
+		})
+		var vm = new Vue({
+			el:'#app',
+			data(){
+				return {
+					color:'red'
+				}
+			},
+			directives:{
+				autoFocus:{
+					inserted:function(el){
+						el.focus();
+					}
+				},
+				//下面两个是函数简写，只在bind和update时调用，不关心其他钩子函数
+				red:function(el,binding,vnode,oldVnode){
+					el.style.color = 'red';
+					console.log(binding);
+					console.log(vnode);
+					console.log(oldVnode);
+				},
+				colorSwitch:function(el,binding){
+					el.style.backgroundColor = binding.value;
+				}
+			},
+			methods:{
+				changeColor(){
+					this.color = 'green';
+				}
+			}
+		})
+	</script>
+</body>
+</html>
