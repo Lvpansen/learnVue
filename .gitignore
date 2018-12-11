@@ -1,6 +1,8 @@
 .DS_Store
 vue-test-demo/node_modules
 /dist
+webpack-demo1.0
+webpack-demo1.1
 
 # local env files
 .env.local
